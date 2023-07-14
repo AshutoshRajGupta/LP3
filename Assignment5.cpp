@@ -1,85 +1,46 @@
 #include <iostream>
 #include <vector>
-using namespace std;
 
-// Function to check if a queen can be placed at the given row and column
-bool isSafe(const vector<vector<int>>& board, int row, int col, int N) {
-    // Check for queens in the same column
-    for (int i = 0; i < row; ++i) {
-        if (board[i][col] == 1) {
+bool isSafe(const std::vector<int>& board, int row, int col) {
+    for (int i = 0; i < row; i++) {
+        if (board[i] == col || board[i] == col - (row - i) || board[i] == col + (row - i)) {
             return false;
         }
     }
-
-    // Check for queens in the upper left diagonal
-    for (int i = row, j = col; i >= 0 && j >= 0; --i, --j) {
-        if (board[i][j] == 1) {
-            return false;
-        }
-    }
-
-    // Check for queens in the upper right diagonal
-    for (int i = row, j = col; i >= 0 && j < N; --i, ++j) {
-        if (board[i][j] == 1) {
-            return false;
-        }
-    }
-
-    return true; // No conflicts found, it's safe to place a queen
+    return true;
 }
 
-// Recursive function to solve the N-Queens problem
-bool solveNQueens(vector<vector<int>>& board, int row, int N) {
-    // Base case: If all queens are placed, return true
-    if (row == N) {
-        return true;
+void solveNQueens(std::vector<int>& board, int row, int n, int& count) {
+    if (row == n) {
+        count++;
+        return;
     }
 
-    // Try placing a queen in each column of the current row
-    for (int col = 0; col < N; ++col) {
-        if (isSafe(board, row, col, N)) {
-            // Place the queen
-            board[row][col] = 1;
-
-            // Recur for the next row
-            if (solveNQueens(board, row + 1, N)) {
-                return true;
-            }
-
-            // If placing the queen doesn't lead to a solution, backtrack and remove it
-            board[row][col] = 0;
+    for (int col = 0; col < n; col++) {
+        if (col == board[0]) {
+            continue;  // Skip the column of the first queen
         }
-    }
 
-    return false; // No solution found for the current configuration
-}
-
-// Function to print the final N-Queens matrix
-void printBoard(const vector<vector<int>>& board) {
-    int N = board.size();
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N; ++j) {
-            cout << board[i][j] << " ";
+        if (isSafe(board, row, col)) {
+            board[row] = col;
+            solveNQueens(board, row + 1, n, count);
         }
-        cout << endl;
     }
 }
 
 int main() {
-    int N = 8; // Change N to the desired number of queens
+    int n;
+    std::cout << "Enter the number of queens (N): ";
+    std::cin >> n;
 
-    vector<vector<int>> board(N, vector<int>(N, 0));
+    std::vector<int> board(n, -1);
+    std::cout << "Enter the column position of the first queen (0-based indexing): ";
+    std::cin >> board[0];
 
-    // Place the first queen at the top-left corner (0, 0)
-    board[0][0] = 1;
+    int count = 0;
+    solveNQueens(board, 1, n, count);
 
-    // Solve the N-Queens problem and print the final board
-    if (solveNQueens(board, 1, N)) {
-        cout << "Solution exists!" << endl;
-        printBoard(board);
-    } else {
-        cout << "No solution exists for N = " << N << "." << endl;
-    }
+    std::cout << "Total solutions: " << count << std::endl;
 
     return 0;
 }
