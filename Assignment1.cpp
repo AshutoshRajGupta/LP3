@@ -1,6 +1,5 @@
 #include <iostream>
 using namespace std;
-
 int fibonacciIterative(int n) {
     if (n <= 1)
         return n;
@@ -14,16 +13,16 @@ int fibonacciIterative(int n) {
     }
     return prev1;
 }
-
 // Recursive Fibonacci function
 int fibonacciRecursive(int n) {
     if (n <= 1)
         return n;
     return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);
 }
-
 int main() {
-    int n = 10;
+    int n;
+    cout<<"Enter the number of numbers"<<endl;
+    cin>>n;
     cout << "Fibonacci(" << n << ") using iterative method: " << fibonacciIterative(n) << endl;
     cout << "Fibonacci(" << n << ") using recursive method: " << fibonacciRecursive(n) << endl;
     return 0;
