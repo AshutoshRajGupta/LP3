@@ -1,0 +1,81 @@
+//SPDX-License-Identifier: MIT 
+pragma solidity ^0.8.0;
+
+// Build the Contract
+contract StudentData
+{
+	// Create a structure for
+	// student details
+	struct Student
+	{
+		int ID;
+		string fName;
+		string lName;
+		
+	}
+	// fallback () external payable {
+		
+	//  }
+
+	address owner;
+	int public stdCount = 0;
+	mapping(int => Student) public stdRecords;
+
+	modifier onlyOwner
+	{
+		require(owner == msg.sender);
+		_;
+	}
+	constructor()
+	{
+		owner=msg.sender;
+	}
+
+	// Create a function to add
+	// the new records
+	function addNewRecords(int _ID,string memory _fName,string memory _lName) public onlyOwner
+	{
+		// Increase the count by 1
+		stdCount = stdCount + 1;
+
+		// Fetch the student details
+		// with the help of stdCount
+		stdRecords[stdCount] = Student(_ID, _fName,_lName);
+	}
+
+}
+
+
+# // SPDX-License-Identifier: MIT
+# pragma solidity >= 0.7.0;
+
+# contract Student_management{
+
+# 	struct Student{
+# 		int stud_id;
+# 		string Name;
+# 		string Department;
+# 	}
+
+# 	Student[] Students;
+
+# 	function add_stud(int stud_id, string memory Name, string memory Department) public{
+# 		Student memory stud = Student(stud_id, Name, Department);
+# 		Students.push(stud);
+# 	}
+
+# 	function getStudent(int stud_id) public view returns(string memory, string memory){
+# 		for(uint i = 0; i < Students.length; i++){
+# 			Student memory stud = Students[i];
+# 			if(stud.stud_id == stud_id){
+# 				return(stud.Name, stud.Department);
+# 			}
+# 		}
+#         return("Name Not Found", "Department Not Found");
+# 	}
+
+# 	//Fallback Function
+# 	fallback() external payable{
+# 		Students.push(Student(7, "XYZ", "Mechanical"));
+# 	}
+# }
