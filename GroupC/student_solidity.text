@@ -1,81 +1,26 @@
-//SPDX-License-Identifier: MIT 
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+contract StudentData {
+    struct Student {
+        string name;
+        uint256 rollNumber;
+        uint256 age;
+    }
+    Student[] public students;
+    constructor() {}
 
-// Build the Contract
-contract StudentData
-{
-	// Create a structure for
-	// student details
-	struct Student
-	{
-		int ID;
-		string fName;
-		string lName;
-		
-	}
-	// fallback () external payable {
-		
-	//  }
+    function addStudent(string memory _name, uint256 _rollNumber, uint256 _age) public {
+        Student memory newStudent = Student(_name, _rollNumber, _age);
+        students.push(newStudent);
+    }
 
-	address owner;
-	int public stdCount = 0;
-	mapping(int => Student) public stdRecords;
+    function getStudentCount() public view returns (uint256) {
+        return students.length;
+    }
 
-	modifier onlyOwner
-	{
-		require(owner == msg.sender);
-		_;
-	}
-	constructor()
-	{
-		owner=msg.sender;
-	}
-
-	// Create a function to add
-	// the new records
-	function addNewRecords(int _ID,string memory _fName,string memory _lName) public onlyOwner
-	{
-		// Increase the count by 1
-		stdCount = stdCount + 1;
-
-		// Fetch the student details
-		// with the help of stdCount
-		stdRecords[stdCount] = Student(_ID, _fName,_lName);
-	}
-
+    function getStudent(uint256 index) public view returns (string memory, uint256, uint256) {
+        require(index < students.length);
+        Student memory student = students[index];
+        return (student.name, student.rollNumber, student.age);
+    }
 }
-
-
-# // SPDX-License-Identifier: MIT
-# pragma solidity >= 0.7.0;
-
-# contract Student_management{
-
-# 	struct Student{
-# 		int stud_id;
-# 		string Name;
-# 		string Department;
-# 	}
-
-# 	Student[] Students;
-
-# 	function add_stud(int stud_id, string memory Name, string memory Department) public{
-# 		Student memory stud = Student(stud_id, Name, Department);
-# 		Students.push(stud);
-# 	}
-
-# 	function getStudent(int stud_id) public view returns(string memory, string memory){
-# 		for(uint i = 0; i < Students.length; i++){
-# 			Student memory stud = Students[i];
-# 			if(stud.stud_id == stud_id){
-# 				return(stud.Name, stud.Department);
-# 			}
-# 		}
-#         return("Name Not Found", "Department Not Found");
-# 	}
-
-# 	//Fallback Function
-# 	fallback() external payable{
-# 		Students.push(Student(7, "XYZ", "Mechanical"));
-# 	}
-# }
