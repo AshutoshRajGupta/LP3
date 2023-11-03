@@ -1,24 +1,10 @@
-
-
-// int main() {
-//     int n;
-//     cout<<"Enter the number of numbers"<<endl;
-//     cin>>n;
-//     cout << "Fibonacci(" << n << ") using iterative method: " << fibonacciIterative(n) << endl;
-//     cout << "Fibonacci(" << n << ") using recursive method: " << fibonacciRecursive(n) << endl;
-//     return 0;
-// }
-
-
 #include <iostream>
 using namespace std;
-
 class FibonacciCalculator {
 public:
     int fibonacciIterative(int n) {
         if (n <= 1)
             return n;
-
         int prev2 = 0;
         int prev1 = 1;
         for (int i = 2; i <= n; ++i) {
@@ -38,18 +24,14 @@ public:
 
 int main() {
     FibonacciCalculator fibonacciCalculator;
-
     int n;
     cout << "Enter the number of numbers: ";
     cin >> n;
-
     cout << "Choose the method to calculate Fibonacci: " << endl;
     cout << "1. Iterative method" << endl;
     cout << "2. Recursive method" << endl;
-
     int choice;
     cin >> choice;
-
     switch (choice) {
         case 1:
             cout << "Fibonacci(" << n << ") using iterative method: " << fibonacciCalculator.fibonacciIterative(n) << endl;
@@ -60,6 +42,5 @@ int main() {
         default:
             cout << "Invalid choice!" << endl;
     }
-
     return 0;
 }

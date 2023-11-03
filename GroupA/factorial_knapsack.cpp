@@ -2,60 +2,49 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-
 struct Item {
-    int weight;
-    int value;
-    double ratio() const {
-        return static_cast<double>(value) / weight;
-    }
+    int profit, weight;
 };
+bool compare(Item a, Item b) {
+    return (double)a.profit / a.weight > (double)b.profit / b.weight;
+}
 
+double fractionalKnapsack(int W, vector<Item>& items) {
+    sort(items.begin(), items.end(), compare);
+    double maxValue = 0.0;
+    for (Item item : items) {
+        if (W == 0) break;
+        if (item.weight <= W) {
+            maxValue += item.profit;
+            W -= item.weight;
+        } else {
+            maxValue += (double)item.profit * W / item.weight;
+            break;
+        }
+    }
+    return maxValue;
+}
 int main() {
-    int n, maxWeight;
+    int W;
+    cout << "Enter knapsack capacity: ";
+    cin >> W;
+    int n;
     cout << "Enter the number of items: ";
     cin >> n;
     vector<Item> items(n);
-    cout << "Enter the weights and values of each item:" << endl;
     for (int i = 0; i < n; i++) {
-        cin >> items[i].weight >> items[i].value;
+        cout << "Enter profit and weight for item " << i + 1 << ": ";
+        cin >> items[i].profit >> items[i].weight;
     }
-
-    cout << "Enter the maximum weight of the knapsack: ";
-    cin >> maxWeight;
-    sort(items.begin(), items.end(), [](const Item& a, const Item& b) {
-        return a.ratio() > b.ratio();
-    });
-    double totalValue = 0.0;
-    for (const Item& item : items) {
-        double fraction = min(1.0, static_cast<double>(maxWeight) / item.weight);
-        maxWeight -= fraction * item.weight;
-        totalValue += fraction * item.value;
-        cout << "Quantity of item with weight " << item.weight << " and value " << item.value << ": " << fraction * item.weight << endl;
-    }
-    cout << "The total profit is " << totalValue << endl;
+    double result = fractionalKnapsack(W, items);
+    cout << "Maximum value: " << result << endl;
     return 0;
 }
 
 
-
-// output
-
-// Enter the number of items: 7
-// Enter the weights and values of each item:
-// 1 5 
-// 3 10
-// 5 15
-// 4 7
-// 1 8
-// 3 9
-// 2 4
-// Enter the maximum weight of the knapsack: 15
-// Quantity of item with weight 1 and value 8: 1
-// Quantity of item with weight 1 and value 5: 1
-// Quantity of item with weight 3 and value 10: 3
-// Quantity of item with weight 5 and value 15: 5
-// Quantity of item with weight 3 and value 9: 3
-// Quantity of item with weight 2 and value 4: 2
-// Quantity of item with weight 4 and value 7: 0
-// The total profit is 51
+// Enter knapsack capacity: 50
+// Enter the number of items: 3
+// Enter profit and weight for item 1: 60 10
+// Enter profit and weight for item 2: 100 20
+// Enter profit and weight for item 3: 120 30
+// Maximum value: 240
