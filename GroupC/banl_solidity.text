@@ -15,11 +15,13 @@ contract BankAccount {
         require(amount > 0);
         balance += amount;
     }
+
     function withdraw(uint256 amount) public onlyOwner {
         require(amount > 0);
         require(amount <= balance);
         balance -= amount;
     }
+    
     function getBalance() public view returns (uint256) {
         return balance;
     }
