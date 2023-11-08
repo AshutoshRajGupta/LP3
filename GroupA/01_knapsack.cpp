@@ -30,6 +30,5 @@ int main() {
         cin >> weights[i] >> values[i];
     }
     int result = knapsack(W, weights, values);
-    cout << "Maximum value: " << result << endl;
-    return 0;
+    cout << "Maximum value: " << result << endl;    return 0;
 }
